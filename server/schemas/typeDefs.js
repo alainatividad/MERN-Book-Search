@@ -1,21 +1,22 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-  type Book {
-    bookId: ID
+  type Books {
     authors: [String]
     description: String
-    title: String
+    bookId: String
     image: String
     link: String
+    title: String
   }
 
   type User {
-    _id: ID!
+    _id: ID
     username: String
     email: String
+    password: String
     bookCount: Int
-    savedBooks: [Book]
+    savedBooks: [Books]
   }
 
   type Auth {
@@ -23,27 +24,23 @@ const typeDefs = gql`
     user: User
   }
 
-  # defining an hierarchical data to be used as argument for saveBook
   input BookInput {
-    bookId: ID
     authors: [String]
     description: String
-    title: String
+    bookId: String
     image: String
     link: String
+    title: String
   }
 
-  # read routes (get)
   type Query {
-    # getSingleUser
     me: User
   }
 
-  # write routes (post, put, delete)
   type Mutation {
     login(email: String!, password: String!): Auth
-    createUser(username: String!, email: String!, password: String!): Auth
-    saveBook(content: BookInput!): User
+    createUser(email: String!, password: String!, username: String!): Auth
+    saveBook(book: BookInput!): User
     removeBook(bookId: String!): User
   }
 `;
